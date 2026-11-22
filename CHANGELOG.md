@@ -6,13 +6,29 @@ implementation; the line will not be called 1.0 until a second,
 independent implementation exists. Published schema files do not
 change in place — a change is a new version beside the old one.
 
+## 0.1.3 — 2026-11-23
+
+References to the private reference implementation removed.
+
+- Releases 0.1.0–0.1.2 named the reference implementation (a
+  private codebase) and cited its commit hashes. A public
+  specification cannot lean on a source its readers cannot see,
+  so throughout the spec, schemas, README, INSTALL, examples
+  and this changelog it is now described generically — "the
+  reference implementation / supervisor / composer" — and the
+  commit hashes are gone. (Earlier entries below were edited
+  in the same pass; their substance is unchanged.) The example
+  task text no longer names it either.
+- No contract change: the only schema edits are description
+  prose and one illustrative `extensions` key name.
+
 ## 0.1.2 — 2026-11-23
 
 Documentation correction: the reference implementation adopted
 the public core.
 
-- the reference implementation adopted the published S2UI names the same day it was
-  published (citing release 0.1.0): its
+- The reference implementation adopted the published S2UI names
+  the same day it was published (citing release 0.1.0): its
   RunDigest boundary now emits the public core
   (`digestVersion`, `subject`, `workUnits`, `finalizing`,
   `interrupted`, …) and its repository vendors the published
@@ -34,7 +50,7 @@ flagged by the surface implementer within hours of 0.1.0.
   A2UI **0.9.1-style** envelope (`version: "v1.0"`, separate
   `createSurface` / `updateComponents` / `updateDataModel`
   messages, `{"path": ...}` bindings, a draft Beth catalogId).
-  S2UI/1 is a profile of A2UI **1.0**, and the shipped the reference implementation
+  S2UI/1 is a profile of A2UI **1.0**, and the shipped reference
   composer uses the 1.0 form:
   `version: "1.0"`, a single `createSurface` carrying components
   and the full data model inline, `{"@path": ...}` bindings, and
@@ -73,7 +89,7 @@ Initial public draft.
   plus three DRAFT schemas (surface envelope, Beth catalog,
   command envelope), each with a stable `$id` under the same base.
 - **Naming pass applied.** Relative to the reference supervisor's
-  internal RunDigest v1, the public core
+  internal RunDigest v1 (the reference implementation's), the public core
   renames `repo` → `subject`, `packages` → `workUnits`,
   `agents[].currentPackageId` → `currentWorkUnitId`,
   `packages.items[].branch` → `ref` (opaque locator),
@@ -101,5 +117,5 @@ Initial public draft.
 Known gaps carried forward: no real waiting-on-a-human (attention)
 digest fixture exists yet; the surface examples in this release
 are draft compositions, to be replaced in 0.2.0 by output
-extracted from the reference composer's real composer (which landed after this
+extracted from the real composer (which landed after this
 package's examples were composed).

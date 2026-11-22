@@ -1,6 +1,6 @@
 # S2UI/1 — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.2 (23 Nov 2026).**
+**Status: public DRAFT, release 0.1.3 (23 Nov 2026).**
 This document is an original specification draft, published at
 https://yakov.khalinsky.com/s2ui/ with its source in the public
 `s2ui` repository. Implementation status is stated honestly in
@@ -55,7 +55,7 @@ S2UI/1 bundles four versioned parts:
 
 | # | Part | Schema | Status (23 Nov 2026) |
 |---|------|--------|----------------------|
-| 1 | RunDigest v1 | `schema/run-digest-v1.schema.json` | **Implemented.** Shipping in the reference implementation (`list_run_digests`, and `supervisor_status` → `structuredContent.digest`), validated against real runs. |
+| 1 | RunDigest v1 | `schema/run-digest-v1.schema.json` | **Implemented.** Shipping in the reference implementation (its `list_run_digests` tool, and `supervisor_status` → `structuredContent.digest`), validated against real runs. |
 | 2 | Beth catalog v1 | `schema/beth-catalog-v1-draft.schema.json` | **DRAFT.** Defined in prose in the reference implementation's decision record; no catalogue file ships yet. The reference composer uses Basic Catalog components only (Text, Card, Column, List). |
 | 3 | Command set | `schema/s2ui-command-v1-draft.schema.json` | **DRAFT.** Defined in prose; no S2UI command tool ships yet. |
 | 4 | Surface lifecycle rules | `schema/s2ui-surface-v1-draft.schema.json` + §7–§8 | **Implemented in the reference supervisor.** Its state-reporting MCP tools return deterministically composed surfaces beside the digest. The surface *examples* in this package are real composer output (release 0.1.1; in 0.1.0 they were 0.9.1-style draft compositions — see the changelog). |
@@ -159,16 +159,17 @@ renaming cost nothing; from publication on, the core follows
 §10: no in-place renames, a change is a new version beside the
 old one.
 
-### 4.3 Mapping from the reference implementation's earlier naming (adopted 23 Nov 2026)
+### 4.3 Mapping from the reference implementation's earlier naming
 
-The reference implementation originally emitted an
-earlier, implementation-specific naming internally. On 23 Nov 2026 it
-**adopted this public core** (citing release 0.1.0 of this package): its RunDigest boundary now
-emits the public names, and its repository vendors this schema
-file itself. The table below records the mapping from the
-earlier internal naming — it is the transformation this
-package's digest examples were published under, and it is what
-a reader needs when comparing pre-adoption output:
+The reference implementation originally emitted an earlier,
+implementation-specific naming internally. On 23 Nov 2026 it
+**adopted this public core** (citing release 0.1.0 of this
+package): its RunDigest boundary now emits the public names,
+and its repository vendors this schema file itself. The table
+below records the mapping from the earlier internal naming —
+it is the transformation this package's digest examples were
+published under, and it is what a reader needs when comparing
+pre-adoption output from that implementation:
 
 | Public core (this package) | Reference implementation's internal v1 (pre-adoption) |
 |---|---|
@@ -286,7 +287,8 @@ S2UI surface for that state.
 - `list_run_digests` returns all digests **and** the portfolio
   surface composed from them.
   *Status today: implemented, as above.*
-- **Host rendering is host-dependent.** In the reference implementation's dialect
+- **Host rendering is host-dependent.** In the reference
+  implementation's dialect
   test, the Muse host rendered none of the A2UI / MCP Apps
   dialects natively for connector tool results; the payload
   ships in canonical A2UI 1.0 form and degrades gracefully to
@@ -390,12 +392,12 @@ sufficient, for conformance.
 ## Provenance
 
 Original prose written for this package, 23 Nov 2026, from the
-decision record in the reference implementation's `docs/BETH.md`
-(Phase 0), the RunDigest v1 implementation
-(Phase 1) and the reference surface composer
-. First published 23 Nov 2026 as release
-0.1.0; release 0.1.1 the same day replaced the draft surface
-examples with real composer output in the A2UI 1.0 envelope
-form, and 0.1.2 recorded the reference implementation's
-adoption of the public core (§4.3). No text is adapted from
-A2UI's documents.
+reference implementation's private decision record, its
+RunDigest v1 implementation and its surface composer. First
+published 23 Nov 2026 as release 0.1.0; release 0.1.1 the same
+day replaced the draft surface examples with real composer
+output in the A2UI 1.0 envelope form, 0.1.2 recorded the
+reference implementation's adoption of the public core (§4.3),
+and 0.1.3 removed references to that private implementation by
+name throughout the package. No text is adapted from A2UI's
+documents.

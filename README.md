@@ -1,6 +1,6 @@
 # S2UI — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.2 (23 Nov 2026).** The protocol
+**Status: public DRAFT, release 0.1.3 (23 Nov 2026).** The protocol
 line is **S2UI/1**; the repository releases are numbered 0.1.x until
 a second, independent implementation exists.
 
@@ -19,7 +19,8 @@ repository is the protocol, extracted so anyone can implement
 it without it.
 
 One honest summary of what exists: **RunDigest v1 is running
-code**, and **the surface composer is running code** (the reference supervisor's state-reporting MCP tools return
+code**, and **the surface composer is running code** (the
+reference supervisor's state-reporting MCP tools return
 deterministically composed A2UI surfaces beside the digest).
 The catalogue *file* and the command set are **specified here as
 drafts** and are not implemented yet. The spec says which is
@@ -37,7 +38,7 @@ not the marketing.
 2. **See its surface** (2 min) — open the paired
    `examples/dogfood-persistence.surface.json`: the A2UI 1.0
    messages a UI renders for that digest — real output of the
-   reference composer's reference implementation, extracted from
+   reference composer's implementation, extracted from
    its MCP tools (the watch URL is sanitised; the composer's
    text labels say "Packages" for work units — a display label,
    not a field name).
@@ -87,9 +88,10 @@ The RunDigest schema in this repository is the **public core**:
 implementation-neutral field names (`subject`, `workUnits`, `ref`,
 `digestVersion`, a `finalizing` state, an `interrupted` state, an
 `extensions` object for profile data). The reference supervisor
-originally emitted an earlier, implementation-specific naming internally
-(`repo`, `packages`, `branch`, `version`, `merging`) — and
-**adopted the public names on 23 Nov 2026** (citing release 0.1.0 of this package). The mapping
+originally emitted an earlier, implementation-specific naming
+internally (`repo`, `packages`, `branch`, `version`, `merging`)
+— and **adopted the public names on 23 Nov 2026**, citing
+release 0.1.0 of this package. The mapping
 table in spec §4.3 records the earlier names, for readers
 comparing pre-adoption output. Neither naming is renamed in
 place once published — a change is a new version beside the
@@ -100,7 +102,7 @@ old one.
 Both digests were taken live from the reference supervisor's
 `list_run_digests` on 23 Nov 2026 and transformed to the public
 core names by the mapping in spec §4.3. The paired surfaces are
-the reference composer's real composer output for the same runs,
+the reference composer's real output for the same runs,
 taken from `supervisor_status` the same day. For publication, local
 filesystem paths and private watch URLs were sanitised (the
 `subject` fields are descriptive, and `links.watchUrl` uses
