@@ -1,6 +1,6 @@
 # S2UI/1 — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.1 (23 Nov 2026).**
+**Status: public DRAFT, release 0.1.2 (23 Nov 2026).**
 This document is an original specification draft, published at
 https://yakov.khalinsky.com/s2ui/ with its source in the public
 `s2ui` repository. Implementation status is stated honestly in
@@ -134,10 +134,10 @@ From the reference implementation's own mapping notes:
   today; a run is `running` from the moment it is recorded. The
   enum keeps `queued` for supervisors that do queue.
 - The core state enum includes `interrupted`, so a resumable
-  run is distinguishable from a terminally stopped one. The
-  reference implementation's *internal* v1 enum does not yet
-  have it and maps interrupted runs to `stopped` — see the
-  mapping in §4.3.
+  run is distinguishable from a terminally stopped one. (Before
+  adopting the public core, the reference implementation's
+  internal enum mapped interrupted runs to `stopped` — see
+  §4.3.)
 - Per-work-unit `verdict` is a bare outcome string derived from
   the work unit's state only (`verified` → `pass`, `failed` →
   `fail`); it is not the run verdict object. Verdicts are
@@ -159,13 +159,18 @@ renaming cost nothing; from publication on, the core follows
 §10: no in-place renames, a change is a new version beside the
 old one.
 
-### 4.3 Mapping from the reference implementation's earlier naming (known divergence)
+### 4.3 Mapping from the reference implementation's earlier naming (adopted 23 Nov 2026)
 
-The reference implementation currently emits an earlier,
-implementation-specific naming internally. Its internal schema and this
-public core are related field-by-field:
+The reference implementation originally emitted an
+earlier, implementation-specific naming internally. On 23 Nov 2026 it
+**adopted this public core** (citing release 0.1.0 of this package): its RunDigest boundary now
+emits the public names, and its repository vendors this schema
+file itself. The table below records the mapping from the
+earlier internal naming — it is the transformation this
+package's digest examples were published under, and it is what
+a reader needs when comparing pre-adoption output:
 
-| Public core (this package) | the reference implementation internal v1 (today) |
+| Public core (this package) | Reference implementation's internal v1 (pre-adoption) |
 |---|---|
 | `digestVersion: "1"` (string) | `version: 1` (integer) |
 | `subject` | `repo` (a local working-directory path) |
@@ -179,12 +184,10 @@ public core are related field-by-field:
 | `links` open object, `watchUrl` optional | `links.watchUrl` required |
 | `extensions` object | — (not emitted) |
 
-The divergence is deliberate and temporary: the public core was
-frozen at publication, and the reference implementation will be
-synced to the public names in a later release. Consumers MUST
-NOT assume the reference implementation emits public-core names
-until that sync lands; producers implementing S2UI from this
-spec MUST emit the public names.
+Consumers should expect current reference-implementation
+output in public-core names; output produced before the
+adoption commit uses the right-hand names. Producers
+implementing S2UI from this spec MUST emit the public names.
 
 ---
 
@@ -238,7 +241,8 @@ surface's lifecycle ends (§7).
   rows, the work-unit rows, the drill-in link, and a snapshot
   line carrying the digest's `updatedAt` and `seq`. (The
   reference composer's labels use its internal naming —
-  "Packages" for work units; see §4.3.) An attention card
+  "Packages" for work units — a display label, not a field
+  name; see §4.3.) An attention card
   exists for each unresolved attention item in the digest, and
   for nothing else.
 
@@ -392,4 +396,6 @@ decision record in the reference implementation's `docs/BETH.md`
 . First published 23 Nov 2026 as release
 0.1.0; release 0.1.1 the same day replaced the draft surface
 examples with real composer output in the A2UI 1.0 envelope
-form. No text is adapted from A2UI's documents.
+form, and 0.1.2 recorded the reference implementation's
+adoption of the public core (§4.3). No text is adapted from
+A2UI's documents.

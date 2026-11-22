@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://yakov.khalinsky.com/s2ui/schema/run-digest-v1.schema.json",
   "title": "RunDigest v1",
-  "description": "A snapshot of one supervised run, folded from its record and its events. Not a delta: replace the previous digest of the run with each new one. seq is the number of the last event folded in and is monotonic per run. This is the public S2UI core: field names are implementation-neutral. The reference producer currently emits an earlier naming internally; the field-by-field mapping is specified in spec/S2UI-1.md (the reference-implementation mapping). Timestamps are ISO 8601.",
+  "description": "A snapshot of one supervised run, folded from its record and its events. Not a delta: replace the previous digest of the run with each new one. seq is the number of the last event folded in and is monotonic per run. This is the public S2UI core: field names are implementation-neutral. The reference producer adopted these public names on 23 Nov 2026; the mapping from its earlier internal naming is recorded in spec/S2UI-1.md §4.3. Timestamps are ISO 8601.",
   "type": "object",
   "additionalProperties": false,
   "required": [

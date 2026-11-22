@@ -6,6 +6,24 @@ implementation; the line will not be called 1.0 until a second,
 independent implementation exists. Published schema files do not
 change in place — a change is a new version beside the old one.
 
+## 0.1.2 — 2026-11-23
+
+Documentation correction: the reference implementation adopted
+the public core.
+
+- the reference implementation adopted the published S2UI names the same day it was
+  published (citing release 0.1.0): its
+  RunDigest boundary now emits the public core
+  (`digestVersion`, `subject`, `workUnits`, `finalizing`,
+  `interrupted`, …) and its repository vendors the published
+  schema file. Spec §4.3, the README and the RunDigest schema's
+  `description` no longer describe the old naming as current —
+  the mapping table is retained as the record of the earlier
+  internal names, for comparing pre-adoption output.
+- No contract change: the only schema edit is that one
+  `description` sentence. (The reference implementation's
+  vendored copy differs by that sentence until its next sync.)
+
 ## 0.1.1 — 2026-11-23
 
 Correction to the surface examples and the surface schema,

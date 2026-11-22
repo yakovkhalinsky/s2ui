@@ -1,6 +1,6 @@
 # S2UI — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.1 (23 Nov 2026).** The protocol
+**Status: public DRAFT, release 0.1.2 (23 Nov 2026).** The protocol
 line is **S2UI/1**; the repository releases are numbered 0.1.x until
 a second, independent implementation exists.
 
@@ -39,8 +39,8 @@ not the marketing.
    messages a UI renders for that digest — real output of the
    reference composer's reference implementation, extracted from
    its MCP tools (the watch URL is sanitised; the composer's
-   labels use the reference implementation's internal naming,
-   see spec §4.3).
+   text labels say "Packages" for work units — a display label,
+   not a field name).
 3. **Validate everything** (1 min):
    ```bash
    node tools/validate
@@ -87,12 +87,13 @@ The RunDigest schema in this repository is the **public core**:
 implementation-neutral field names (`subject`, `workUnits`, `ref`,
 `digestVersion`, a `finalizing` state, an `interrupted` state, an
 `extensions` object for profile data). The reference supervisor
-currently emits an earlier, implementation-specific naming internally
-(`repo`, `packages`, `branch`, `version`, `merging`). The two are
-related field-by-field by the mapping table in spec §4.3; the
-reference implementation will be synced to the public names in a
-later release. Neither naming is renamed in place once published —
-a change is a new version beside the old one.
+originally emitted an earlier, implementation-specific naming internally
+(`repo`, `packages`, `branch`, `version`, `merging`) — and
+**adopted the public names on 23 Nov 2026** (citing release 0.1.0 of this package). The mapping
+table in spec §4.3 records the earlier names, for readers
+comparing pre-adoption output. Neither naming is renamed in
+place once published — a change is a new version beside the
+old one.
 
 ## Examples provenance
 

@@ -117,7 +117,9 @@ You render surfaces for a human.
   reference implementation with the
   generic-core naming pass applied (spec §4.3 gives the
   field-by-field mapping between the public names and the
-  reference implementation's current internal names). Its `$id`
+  reference implementation's earlier internal names; the
+  reference implementation adopted the public names on
+  23 Nov 2026). Its `$id`
   is stable: `https://yakov.khalinsky.com/s2ui/schema/run-digest-v1.schema.json`.
 - The other three schemas are **drafts written for this package**
   from the specification prose. Each says so in its
