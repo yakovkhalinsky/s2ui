@@ -1,0 +1,133 @@
+#!/usr/bin/env node
+// S2UI validator. Node, no dependencies.
+// Hand-rolled JSON Schema (draft-07 subset) validator in the reference
+// repo's style: supports type (incl. type arrays), const, enum,
+// required, properties, additionalProperties:false, items,
+// minLength, minItems, and format:"date-time" (shape check only).
+//
+// Usage:
+//   node tools/validate                 validate every file in examples/
+//   node tools/validate <file> [...]    validate specific files
+//   node tools/validate --schema <schema.json> <file>
+//
+// Schema is chosen by filename when not given:
+//   *.rundigest.json -> schema/run-digest-v1.schema.json
+//   *.surface.json   -> schema/s2ui-surface-v1-draft.schema.json
+//   *.catalog.json   -> schema/beth-catalog-v1-draft.schema.json
+//   *.command.json   -> schema/s2ui-command-v1-draft.schema.json
+// Exit code 0 = all valid, 1 = any invalid or unreadable.
+
+'use strict';
+const fs = require('fs');
+const path = require('path');
+
+const root = path.join(__dirname, '..');
+
+const BY_SUFFIX = [
+  ['.rundigest.json', 'schema/run-digest-v1.schema.json'],
+  ['.surface.json', 'schema/s2ui-surface-v1-draft.schema.json'],
+  ['.catalog.json', 'schema/beth-catalog-v1-draft.schema.json'],
+  ['.command.json', 'schema/s2ui-command-v1-draft.schema.json'],
+];
+
+function typeOf(v) {
+  if (v === null) return 'null';
+  if (Array.isArray(v)) return 'array';
+  if (Number.isInteger(v)) return 'integer';
+  return typeof v; // object | string | number | boolean
+}
+
+function validate(schema, value, at, errors) {
+  if (!schema || typeof schema !== 'object') return;
+  if (schema.const !== undefined && value !== schema.const) {
+    errors.push(`${at}: expected const ${JSON.stringify(schema.const)}, got ${JSON.stringify(value)}`);
+    return;
+  }
+  if (schema.enum && !schema.enum.includes(value)) {
+    errors.push(`${at}: ${JSON.stringify(value)} is not one of ${schema.enum.join(', ')}`);
+    return;
+  }
+  if (schema.type) {
+    const types = Array.isArray(schema.type) ? schema.type : [schema.type];
+    const t = typeOf(value);
+    const ok = types.some((want) => want === t || (want === 'number' && t === 'integer'));
+    if (!ok) {
+      errors.push(`${at}: expected type ${types.join('|')}, got ${t}`);
+      return;
+    }
+  }
+  if (typeof value === 'string') {
+    if (schema.minLength !== undefined && value.length < schema.minLength) {
+      errors.push(`${at}: string shorter than minLength ${schema.minLength}`);
+    }
+    if (schema.format === 'date-time' && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/.test(value)) {
+      errors.push(`${at}: not a date-time: ${JSON.stringify(value)}`);
+    }
+  }
+  if (Array.isArray(value)) {
+    if (schema.minItems !== undefined && value.length < schema.minItems) {
+      errors.push(`${at}: fewer than minItems ${schema.minItems}`);
+    }
+    if (schema.items) value.forEach((item, i) => validate(schema.items, item, `${at}[${i}]`, errors));
+  }
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    for (const key of schema.required || []) {
+      if (!(key in value)) errors.push(`${at}: missing required property "${key}"`);
+    }
+    const props = schema.properties || {};
+    for (const [key, sub] of Object.entries(value)) {
+      if (props[key]) validate(props[key], sub, `${at}.${key}`, errors);
+      else if (schema.additionalProperties === false) {
+        errors.push(`${at}: additional property "${key}" is not allowed`);
+      }
+    }
+  }
+}
+
+function schemaFor(file) {
+  for (const [suffix, schemaPath] of BY_SUFFIX) {
+    if (file.endsWith(suffix)) return path.join(root, schemaPath);
+  }
+  return null;
+}
+
+function check(file, schemaPath) {
+  let data, schema;
+  try { data = JSON.parse(fs.readFileSync(file, 'utf8')); }
+  catch (e) { console.log(`FAIL ${file} — cannot read/parse: ${e.message}`); return false; }
+  try { schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8')); }
+  catch (e) { console.log(`FAIL ${file} — cannot load schema ${schemaPath}: ${e.message}`); return false; }
+  const errors = [];
+  validate(schema, data, '$', errors);
+  if (errors.length) {
+    console.log(`FAIL ${file} (${path.basename(schemaPath)})`);
+    for (const e of errors) console.log(`  - ${e}`);
+    return false;
+  }
+  console.log(`PASS ${file} (${path.basename(schemaPath)})`);
+  return true;
+}
+
+function main() {
+  const args = process.argv.slice(2);
+  let explicitSchema = null;
+  const files = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--schema') explicitSchema = args[++i];
+    else files.push(args[i]);
+  }
+  let targets = files;
+  if (!targets.length) {
+    const exDir = path.join(root, 'examples');
+    targets = fs.readdirSync(exDir).filter((f) => f.endsWith('.json')).sort().map((f) => path.join(exDir, f));
+  }
+  let allOk = true;
+  for (const file of targets) {
+    const schemaPath = explicitSchema ? path.resolve(explicitSchema) : schemaFor(file);
+    if (!schemaPath) { console.log(`SKIP ${file} — no schema rule for this filename; pass --schema`); allOk = false; continue; }
+    if (!check(file, schemaPath)) allOk = false;
+  }
+  process.exit(allOk ? 0 : 1);
+}
+
+main();

@@ -1,0 +1,144 @@
+{
+  "$id": "https://yakov.khalinsky.com/s2ui/schema/s2ui-surface-v1-draft.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "DRAFT — not yet implemented in shipping the reference implementation/Beth code. the reference implementation (Beth Phase 2) is the first implementation. Describes the A2UI 1.0 profile envelope S2UI uses: a list of A2UI messages (createSurface, updateComponents, updateDataModel, deleteSurface) for one surface, composed deterministically from one or more RunDigest v1 snapshots. The _draft/_note/_s2ui keys are present only in this draft package's examples and MUST NOT be emitted by production code.",
+  "properties": {
+    "_draft": {
+      "type": "boolean"
+    },
+    "_note": {
+      "type": "string"
+    },
+    "_s2ui": {
+      "properties": {
+        "catalogId": {
+          "type": "string"
+        },
+        "sourceDigestRunId": {
+          "type": "string"
+        },
+        "sourceDigestSeq": {
+          "type": "integer"
+        },
+        "surfaceKind": {
+          "enum": [
+            "portfolio",
+            "run"
+          ],
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "catalogId",
+        "surfaceKind"
+      ],
+      "type": "object"
+    },
+    "messages": {
+      "items": {
+        "properties": {
+          "createSurface": {
+            "properties": {
+              "catalogId": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sendDataModel": {
+                "type": "boolean"
+              },
+              "surfaceId": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "surfaceId",
+              "catalogId"
+            ],
+            "type": "object"
+          },
+          "deleteSurface": {
+            "properties": {
+              "surfaceId": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "surfaceId"
+            ],
+            "type": "object"
+          },
+          "updateComponents": {
+            "properties": {
+              "components": {
+                "items": {
+                  "properties": {
+                    "component": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "component"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "surfaceId": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "surfaceId",
+              "components"
+            ],
+            "type": "object"
+          },
+          "updateDataModel": {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "surfaceId": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {}
+            },
+            "required": [
+              "surfaceId"
+            ],
+            "type": "object"
+          },
+          "version": {
+            "const": "v1.0",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "messages"
+  ],
+  "title": "S2UI Surface Envelope v1 — DRAFT",
+  "type": "object"
+}

@@ -1,0 +1,76 @@
+{
+  "$id": "https://yakov.khalinsky.com/s2ui/schema/beth-catalog-v1-draft.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "DRAFT — derived from the S2UI/1 specification, spec/S2UI-1.md §5 (decision 6: A2UI Basic Catalog only in v1, no custom components, durations as text). No catalog file ships in the reference implementation yet. An A2UI catalog document for S2UI: an identifier, the component names a surface may use, surface templates, and an instructions field that agent SDKs may inject into an LLM system prompt (the A2UI catalog pattern).",
+  "properties": {
+    "a2uiVersion": {
+      "const": "1.0",
+      "type": "string"
+    },
+    "catalogId": {
+      "description": "Stable catalog identifier, e.g. beth-v1.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "components": {
+      "description": "Component names allowed in S2UI v1 surfaces. Basic Catalog only.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "instructions": {
+      "description": "Markdown instructions for an LLM/agent host, in the A2UI catalog style.",
+      "type": "string"
+    },
+    "s2uiVersion": {
+      "const": "S2UI/1-draft",
+      "type": "string"
+    },
+    "templates": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "run-card",
+              "attention-card",
+              "portfolio",
+              "run-detail"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "_draft": {
+      "type": "boolean",
+      "description": "Draft-package marker, examples only. MUST NOT be emitted by production code."
+    },
+    "_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "catalogId",
+    "s2uiVersion",
+    "a2uiVersion",
+    "components",
+    "templates"
+  ],
+  "title": "Beth Catalog v1 — DRAFT",
+  "type": "object"
+}

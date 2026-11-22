@@ -1,0 +1,102 @@
+{
+  "digestVersion": "1",
+  "runId": "run_b8bc80f32636158e",
+  "subject": "A tiny Node.js demonstration project (two independent utilities)",
+  "taskSummary": "Build two independent utilities for this tiny Node project, as two separate build packages, in parallel where the protocol allows it. Package one: create src/add.js exporting a function add(a, b) that returns the sum of two numbers, with tests in test/add.test.js (node:test) cove…",
+  "supervisorId": "supervisor",
+  "state": "done",
+  "stage": {
+    "index": 6,
+    "count": 7,
+    "name": "hand-off or closure",
+    "role": "supervisor"
+  },
+  "startedAt": "2026-11-22T02:12:12.859Z",
+  "elapsedSec": 736.032,
+  "updatedAt": "2026-11-22T02:24:33.973Z",
+  "agents": [
+    {
+      "name": "supervisor",
+      "role": "supervisor",
+      "state": "done"
+    },
+    {
+      "name": "builder-add",
+      "role": "builder",
+      "state": "done"
+    },
+    {
+      "name": "builder-greet",
+      "role": "builder",
+      "state": "done"
+    },
+    {
+      "name": "builder-fix",
+      "role": "builder",
+      "state": "done"
+    },
+    {
+      "name": "verifier-add",
+      "role": "verifier",
+      "state": "done"
+    },
+    {
+      "name": "verifier-fix",
+      "role": "verifier",
+      "state": "done"
+    },
+    {
+      "name": "verifier-greet",
+      "role": "verifier",
+      "state": "done"
+    },
+    {
+      "name": "runtime-merge",
+      "role": "archivist",
+      "state": "done"
+    }
+  ],
+  "workUnits": {
+    "total": 3,
+    "done": 3,
+    "failed": 0,
+    "items": [
+      {
+        "id": "P1",
+        "title": "Build add utility with tests",
+        "state": "verified",
+        "verdict": "pass",
+        "ref": "feature/add"
+      },
+      {
+        "id": "P2",
+        "title": "Build greet utility with tests",
+        "state": "verified",
+        "verdict": "pass",
+        "ref": "feature/greet"
+      },
+      {
+        "id": "P3",
+        "title": "Repair the npm test script so the stated test command runs",
+        "state": "verified",
+        "verdict": "pass",
+        "ref": "feature/fix-test-script"
+      }
+    ]
+  },
+  "attention": [],
+  "links": {
+    "watchUrl": "https://example.invalid/watch?run=run_b8bc80f32636158e"
+  },
+  "seq": 14292,
+  "verdict": {
+    "outcome": "pass",
+    "summary": "Green verdict by verifier-add; 7 of 7 criteria passed",
+    "by": "verifier-add",
+    "at": "2026-11-22T02:22:42.670Z"
+  },
+  "tokens": {
+    "input": 364131,
+    "output": 121848
+  }
+}

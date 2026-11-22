@@ -1,0 +1,109 @@
+{
+  "digestVersion": "1",
+  "runId": "run_27ef7d722d389f93",
+  "subject": "The reference supervisor's own repository",
+  "taskSummary": "Fix the two known persistence caveats in this repo (the reference implementation itself). (1) run.json is rewritten only on state-changing events, so its lastEvent can lag the trailing events after run.finished — make the persisted record accurate when a run finishes, so a reloaded finished run's lastE…",
+  "supervisorId": "supervisor",
+  "state": "done",
+  "stage": {
+    "index": 6,
+    "count": 7,
+    "name": "hand-off or closure",
+    "role": "supervisor"
+  },
+  "startedAt": "2026-11-21T21:08:47.924Z",
+  "elapsedSec": 2332.039,
+  "updatedAt": "2026-11-21T21:47:45.002Z",
+  "agents": [
+    {
+      "name": "supervisor",
+      "role": "supervisor",
+      "state": "done"
+    },
+    {
+      "name": "researcher",
+      "role": "researcher",
+      "state": "done"
+    },
+    {
+      "name": "builder",
+      "role": "builder",
+      "state": "done"
+    },
+    {
+      "name": "verifier",
+      "role": "verifier",
+      "state": "done"
+    },
+    {
+      "name": "runtime",
+      "role": "runtime",
+      "state": "done"
+    },
+    {
+      "name": "archivist",
+      "role": "archivist",
+      "state": "done"
+    }
+  ],
+  "workUnits": {
+    "total": 6,
+    "done": 6,
+    "failed": 0,
+    "items": [
+      {
+        "id": "P1",
+        "title": "P1: Analyse the two persistence caveats and produce a fix design",
+        "state": "verified",
+        "verdict": "pass"
+      },
+      {
+        "id": "P2",
+        "title": "P2: Implement the two persistence fixes in the server code",
+        "state": "verified",
+        "verdict": "pass",
+        "ref": "feature/persistence-record-accuracy"
+      },
+      {
+        "id": "P3",
+        "title": "P3: Tests for both behaviours including a reload/restart case, and docs/PERSISTENCE.md update",
+        "state": "verified",
+        "verdict": "pass",
+        "ref": "feature/persistence-record-accuracy"
+      },
+      {
+        "id": "P4",
+        "title": "P4: Verify the two persistence fixes against the package criteria",
+        "state": "verified",
+        "verdict": "pass"
+      },
+      {
+        "id": "P5",
+        "title": "P5: Merge the feature branch to main with a merge commit, and record the merge accounting",
+        "state": "verified",
+        "verdict": "pass"
+      },
+      {
+        "id": "P6",
+        "title": "P6: Archive the run and close it",
+        "state": "verified",
+        "verdict": "pass"
+      }
+    ]
+  },
+  "attention": [],
+  "links": {
+    "watchUrl": "https://example.invalid/watch?run=run_27ef7d722d389f93"
+  },
+  "seq": 78139,
+  "verdict": {
+    "outcome": "pass",
+    "summary": "Green verdict by verifier; 22 of 22 criteria passed",
+    "by": "verifier",
+    "at": "2026-11-21T21:45:11.743Z"
+  },
+  "tokens": {
+    "input": 551820,
+    "output": 354188
+  }
+}

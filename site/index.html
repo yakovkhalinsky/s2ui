@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="S2UI — Supervisor-to-UI. A profile of A2UI 1.0 that standardises how a supervisor of agent teams publishes run state to a user interface.">
+<meta name="theme-color" content="#0f172a">
+<title>S2UI — Supervisor-to-UI</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+  main { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #7dd3fc; margin: 0 0 .5rem; }
+  h1 { font-size: 2.6rem; line-height: 1.1; margin: 0 0 .75rem; }
+  h2 { font-size: 1.35rem; margin: 2.5rem 0 .75rem; color: #f1f5f9; }
+  p.lede { font-size: 1.15rem; color: #cbd5e1; }
+  a { color: #7dd3fc; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em;
+         background: #1e293b; padding: .1em .35em; border-radius: 4px; }
+  .status { display: inline-block; border: 1px solid #b45309; color: #fbbf24; border-radius: 999px;
+            padding: .15rem .7rem; font-size: .82rem; margin-bottom: 1rem; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 1rem 1.1rem; }
+  .card h3 { margin: 0 0 .4rem; font-size: 1.02rem; }
+  .card p { margin: 0; color: #cbd5e1; font-size: .95rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .95rem; }
+  th, td { border: 1px solid #334155; padding: .5rem .7rem; text-align: left; vertical-align: top; }
+  th { background: #1e293b; }
+  .impl { color: #4ade80; font-weight: 600; }
+  .draft { color: #fbbf24; font-weight: 600; }
+  footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #334155; color: #94a3b8; font-size: .9rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin: .3rem 0; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">A profile of A2UI 1.0</p>
+  <h1>S2UI — Supervisor-to-UI</h1>
+  <p><span class="status">Public draft · release 0.1.0 · protocol line S2UI/1</span></p>
+  <p class="lede">S2UI standardises how a <strong>supervisor</strong> — a system that runs a team of
+  agents on a task, in stages, in work units, under a verdict, sometimes waiting on a human —
+  publishes the state of its runs so that a user interface can render them, and how that
+  interface asks the supervisor to act.</p>
+  <p>Its core object is a <strong>snapshot digest</strong> of a run — state, stage, work units,
+  verdict and outstanding human attention — which a UI can render correctly after reconnecting,
+  restarting, or arriving late, with no event replay. Surfaces are composed from digests
+  deterministically, by code and templates — never by an LLM in the observability path.</p>
+
+  <div class="cards">
+    <div class="card"><h3><a href="spec.html">The specification</a></h3>
+      <p>S2UI-1.md — the four parts, the MCP embedding, versioning and conformance, in
+      RFC 2119 language. <a href="spec/S2UI-1.md">Raw Markdown</a>.</p></div>
+    <div class="card"><h3><a href="https://github.com/yakovkhalinsky/s2ui">Source repository</a></h3>
+      <p>The public repo: spec, schemas, examples, validator and installation guides. MIT.</p></div>
+    <div class="card"><h3><a href="https://github.com/yakovkhalinsky/s2ui/blob/main/INSTALL.md">Install S2UI</a></h3>
+      <p>Three consumer paths: MCP host / LLM agent, supervisor implementer, UI host.</p></div>
+  </div>
+
+  <h2>The four parts, and their status</h2>
+  <table>
+    <tr><th>Part</th><th>Schema</th><th>Status</th></tr>
+    <tr><td>RunDigest v1</td><td><a href="schema/run-digest-v1.schema.json">run-digest-v1.schema.json</a></td>
+      <td><span class="impl">Implemented</span> — shipping in the reference supervisor, validated against real runs.</td></tr>
+    <tr><td>Surface lifecycle rules</td><td><a href="schema/s2ui-surface-v1-draft.schema.json">s2ui-surface-v1-draft.schema.json</a></td>
+      <td><span class="impl">Implemented</span> — the reference supervisor's MCP tools return composed
+      <code>application/a2ui+json</code> surfaces beside the digest. The examples below are still draft compositions.</td></tr>
+    <tr><td>Beth catalog v1</td><td><a href="schema/beth-catalog-v1-draft.schema.json">beth-catalog-v1-draft.schema.json</a></td>
+      <td><span class="draft">Draft</span> — A2UI Basic Catalog only in v1; durations as text.</td></tr>
+    <tr><td>Command set</td><td><a href="schema/s2ui-command-v1-draft.schema.json">s2ui-command-v1-draft.schema.json</a></td>
+      <td><span class="draft">Draft</span> — idempotency-keyed commands, authorised server-side per run.</td></tr>
+  </table>
+  <p>Honest position: today there is exactly one producer (a private reference supervisor) and
+  no built consumer. The protocol line stays at 0.1.x until a second, independent implementation exists.</p>
+
+  <h2>Examples</h2>
+  <ul>
+    <li><a href="examples/dogfood-persistence.rundigest.json">dogfood-persistence.rundigest.json</a> — a real run:
+      a supervisor fixing its own persistence bugs. Paired
+      <a href="examples/dogfood-persistence.surface.json">draft surface</a>.</li>
+    <li><a href="examples/parallel-packages.rundigest.json">parallel-packages.rundigest.json</a> — a real run with
+      parallel work units. Paired <a href="examples/parallel-packages.surface.json">draft surface</a>.</li>
+    <li><a href="examples/beth.catalog.json">beth.catalog.json</a> — draft catalogue example;
+      its <code>instructions</code> field is the LLM installation mechanism.</li>
+    <li><a href="examples/answer-attention.command.json">answer-attention.command.json</a> — draft command example.</li>
+  </ul>
+  <p>Validate them all with <code>node tools/validate</code> from the repository — no dependencies.</p>
+
+  <h2>Differentiation</h2>
+  <p>Against raw event streams (AG-UI-style): a stream tells a UI what just happened in a live
+  session; S2UI's digest is a snapshot a UI can render from after arriving late. Against
+  product-specific supervisor contracts: S2UI is a standalone, implementation-independent
+  profile with a published schema — a supervisor keeps its own lifecycle, roles and runtime;
+  S2UI only constrains what it publishes and the commands it accepts.</p>
+
+  <footer>
+    <p>S2UI is named in parallel with A2UI (Agent-to-UI): A2UI covers agent → screen; S2UI covers
+    supervisor → screen. Not affiliated with s2ui.com or the <code>s-ui</code>/<code>2s-ui</code> panels.
+    · <a href="https://github.com/yakovkhalinsky/s2ui/blob/main/CHANGELOG.md">Changelog</a>
+    · MIT © 2026 Yakov Khalinsky</p>
+  </footer>
+</main>
+</body>
+</html>

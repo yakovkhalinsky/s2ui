@@ -1,0 +1,56 @@
+{
+  "$id": "https://yakov.khalinsky.com/s2ui/schema/s2ui-command-v1-draft.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "DRAFT — derived from the S2UI/1 specification, spec/S2UI-1.md §5 (the command set: answer_attention, approve_run, stop_run, check_run_state). No S2UI command tool ships in the reference implementation yet. Every command is idempotency-keyed and authorised server-side per run. The envelope standardises the request shape, never the permission.",
+  "properties": {
+    "answer": {
+      "description": "For answer_attention / approve_run: the chosen answer, e.g. approved, denied, or free text for a question.",
+      "type": "string"
+    },
+    "attentionId": {
+      "description": "Required in practice for answer_attention; names the stable attention id from the RunDigest.",
+      "type": "string"
+    },
+    "command": {
+      "enum": [
+        "answer_attention",
+        "approve_run",
+        "stop_run",
+        "check_run_state"
+      ],
+      "type": "string"
+    },
+    "expectedSeq": {
+      "description": "For consequential commands: the digest seq the caller acted on. The server re-checks current state (check_run_state) before acting; a mismatch is a refusal, not a guess.",
+      "type": "integer"
+    },
+    "idempotencyKey": {
+      "description": "Caller-generated unique key. Replaying the same key MUST NOT perform the action twice.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "requestedBy": {
+      "description": "Identity the server records in its audit log (who, action, runId, attentionId). The server MUST NOT trust this field for authorisation.",
+      "type": "string"
+    },
+    "runId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "_draft": {
+      "type": "boolean",
+      "description": "Draft-package marker, examples only. MUST NOT be emitted by production code."
+    },
+    "_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "command",
+    "runId",
+    "idempotencyKey"
+  ],
+  "title": "S2UI Command Envelope v1 — DRAFT",
+  "type": "object"
+}

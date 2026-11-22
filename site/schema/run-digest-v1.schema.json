@@ -1,0 +1,354 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://yakov.khalinsky.com/s2ui/schema/run-digest-v1.schema.json",
+  "title": "RunDigest v1",
+  "description": "A snapshot of one supervised run, folded from its record and its events. Not a delta: replace the previous digest of the run with each new one. seq is the number of the last event folded in and is monotonic per run. This is the public S2UI core: field names are implementation-neutral. The reference producer currently emits an earlier naming internally; the field-by-field mapping is specified in spec/S2UI-1.md (the reference-implementation mapping). Timestamps are ISO 8601.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "digestVersion",
+    "runId",
+    "supervisorId",
+    "state",
+    "startedAt",
+    "updatedAt",
+    "seq"
+  ],
+  "properties": {
+    "digestVersion": {
+      "type": "string",
+      "const": "1",
+      "description": "The RunDigest version, in-band: tool results travel without their schema, so consumers need the version in the digest itself."
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "What the run acts on — a repository, a ticket queue, a document set. A URL, if any, belongs in links. Absent when the producer does not name a subject."
+    },
+    "taskSummary": {
+      "type": "string",
+      "description": "The first line of the task, truncated."
+    },
+    "supervisorId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name of the agent with the supervisor role, when the roster names one."
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "waiting_human",
+        "verifying",
+        "finalizing",
+        "interrupted",
+        "done",
+        "failed",
+        "stopped"
+      ]
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "count",
+        "name",
+        "role"
+      ],
+      "properties": {
+        "index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Zero-based index of the stage within the stages of the run's mode; null when the stage is not one of them."
+        },
+        "count": {
+          "type": "integer",
+          "description": "How many stages the run's mode has."
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The nominal owner role of the stage."
+        }
+      }
+    },
+    "startedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "elapsedSec": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Seconds from the start of the run to its finish, or to now while it runs."
+    },
+    "updatedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the run last changed: the time of the last event folded in, or of the record when there are no events."
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "role",
+          "state"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "working",
+              "starting",
+              "done",
+              "failed",
+              "stopped",
+              "interrupted",
+              "unknown"
+            ]
+          },
+          "currentWorkUnitId": {
+            "type": "string",
+            "description": "The in-flight work unit this agent owns, when one is recorded as theirs. Absent otherwise."
+          }
+        }
+      }
+    },
+    "workUnits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "done",
+        "failed",
+        "items"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer"
+        },
+        "done": {
+          "type": "integer",
+          "description": "Work units in the verified state."
+        },
+        "failed": {
+          "type": "integer",
+          "description": "Work units in the failed state."
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "title",
+              "state"
+            ],
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "planned",
+                  "in_progress",
+                  "built",
+                  "verified",
+                  "failed",
+                  "interrupted"
+                ]
+              },
+              "verdict": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail"
+                ],
+                "description": "Derived from the work unit state: verified is pass, failed is fail. A bare outcome string, not the run verdict object. Absent for any other state."
+              },
+              "ref": {
+                "type": "string",
+                "description": "An opaque locator for the work unit's artefact — a branch name, a ticket ID, a URL. The core assigns it no semantics. Absent when the producer records none."
+              }
+            }
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "summary"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "blocked"
+          ],
+          "description": "The run verdict, green as pass, red as fail, blocked as blocked."
+        },
+        "summary": {
+          "type": "string"
+        },
+        "by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "description": "The verdict of the run, when one has been posted. Absent before any verdict."
+    },
+    "attention": {
+      "type": "array",
+      "description": "What needs a human now: pending authorisations (kind approval), an escalation, and a blocked verdict (kind blocked). An item is present only while it is unresolved; resolving it removes it from the next digest. Ids are stable for the life of the item.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "prompt",
+          "raisedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "question",
+              "approval",
+              "blocked"
+            ]
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The answers on offer, for an approval: approved or denied."
+          },
+          "preparedAction": {
+            "type": "string",
+            "description": "For an approval: the action that will be taken if it is approved, as recorded by the agent that asked."
+          },
+          "raisedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "workUnitId": {
+            "type": "string",
+            "description": "The work unit the item belongs to, when it is recorded against one. Absent otherwise."
+          }
+        }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "output"
+      ],
+      "properties": {
+        "input": {
+          "type": "number"
+        },
+        "output": {
+          "type": "number"
+        },
+        "costUsd": {
+          "type": "number",
+          "description": "Present only when a provider reported a non-zero cost."
+        }
+      },
+      "description": "Token usage folded from agent.turn.finished events. Absent when no usage was reported."
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "watchUrl": {
+          "type": "string",
+          "description": "The watch page of the run: the drill-in for everything the digest summarises."
+        }
+      },
+      "description": "An open object of named links. watchUrl is the one v1-defined key; producers may add others."
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Implementation-profile data, keyed by profile name (for example \"my-supervisor\"). Contents are not constrained by the core schema; implementation-specific data belongs here, not in core fields.",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "seq": {
+      "type": "integer",
+      "description": "The number of the last event folded into this digest, in the one log's numbers. 0 when there are no events."
+    }
+  }
+}
