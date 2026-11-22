@@ -6,6 +6,36 @@ implementation; the line will not be called 1.0 until a second,
 independent implementation exists. Published schema files do not
 change in place — a change is a new version beside the old one.
 
+## 0.1.1 — 2026-11-23
+
+Correction to the surface examples and the surface schema,
+flagged by the surface implementer within hours of 0.1.0.
+
+- **Surface examples regenerated from real composer output.**
+  The 0.1.0 examples were draft compositions written in an
+  A2UI **0.9.1-style** envelope (`version: "v1.0"`, separate
+  `createSurface` / `updateComponents` / `updateDataModel`
+  messages, `{"path": ...}` bindings, a draft Beth catalogId).
+  S2UI/1 is a profile of A2UI **1.0**, and the shipped the reference implementation
+  composer uses the 1.0 form:
+  `version: "1.0"`, a single `createSurface` carrying components
+  and the full data model inline, `{"@path": ...}` bindings, and
+  the A2UI Basic Catalog URL as `catalogId`. Both
+  `*.surface.json` examples are now that real output, extracted
+  from the reference supervisor's MCP tools; the only edit is
+  the sanitised watch URL. The composer's text labels use the
+  reference implementation's internal naming ("Packages") —
+  see the mapping in spec §4.3.
+- **Surface schema aligned** (`s2ui-surface-v1-draft.schema.json`,
+  still DRAFT): now describes the A2UI 1.0 message list as
+  actually emitted.
+- **Spec §5/§6 aligned:** the snapshot form is defined as the
+  single-`createSurface` payload; §5 records that surfaces carry
+  the Basic Catalog URL as `catalogId` until a Beth catalog file
+  ships with a stable id of its own.
+
+The RunDigest schema — the implemented contract — is unchanged.
+
 ## 0.1.0 — 2026-11-23
 
 Initial public draft.

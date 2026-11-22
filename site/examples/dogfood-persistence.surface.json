@@ -1,114 +1,192 @@
-{
-  "_draft": true,
-  "_note": "DRAFT illustrative S2UI surface composition. the reference implementation (Beth Phase 2) has not landed in the reference implementation yet, so no shipping code emits this exact payload today. It is composed deterministically from the paired RunDigest following spec/S2UI-1.md sections 6-8, using only A2UI Basic Catalog components.",
-  "_s2ui": {
-    "version": "S2UI/1-draft",
-    "catalogId": "beth-v1-draft",
-    "surfaceKind": "run",
-    "sourceDigestRunId": "run_27ef7d722d389f93",
-    "sourceDigestSeq": 78139
-  },
-  "messages": [
-    {
-      "version": "v1.0",
-      "createSurface": {
-        "surfaceId": "run_run_27ef7d722d389f93",
-        "catalogId": "beth-v1-draft",
-        "sendDataModel": true
-      }
-    },
-    {
-      "version": "v1.0",
-      "updateComponents": {
-        "surfaceId": "run_run_27ef7d722d389f93",
-        "components": [
-          {
-            "id": "root",
-            "component": "Column",
-            "children": [
-              "card"
-            ]
-          },
-          {
-            "id": "card",
-            "component": "Card",
-            "child": "card_col"
-          },
-          {
-            "id": "card_col",
-            "component": "Column",
-            "children": [
-              "title",
-              "state",
-              "stage",
-              "workUnits",
-              "verdict",
-              "watch"
-            ]
-          },
-          {
-            "id": "title",
-            "component": "Text",
-            "text": {
-              "path": "/taskSummary"
-            },
-            "variant": "h3"
-          },
-          {
-            "id": "state",
-            "component": "Text",
-            "text": {
-              "path": "/stateText"
-            }
-          },
-          {
-            "id": "stage",
-            "component": "Text",
-            "text": {
-              "path": "/stageText"
-            }
-          },
-          {
-            "id": "workUnits",
-            "component": "Text",
-            "text": {
-              "path": "/workUnitsText"
-            }
-          },
-          {
-            "id": "verdict",
-            "component": "Text",
-            "text": {
-              "path": "/verdictText"
-            }
-          },
-          {
-            "id": "watch",
-            "component": "Text",
-            "text": {
-              "path": "/watchText"
-            }
+[
+  {
+    "version": "1.0",
+    "createSurface": {
+      "surfaceId": "run_run_27ef7d722d389f93",
+      "catalogId": "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "body"
+        },
+        {
+          "id": "body",
+          "component": "Column",
+          "children": [
+            "title",
+            "task",
+            "state",
+            "stage",
+            "elapsed",
+            "packages_line",
+            "verdict",
+            "team_heading",
+            "team_list",
+            "packages_heading",
+            "package_list",
+            "watch",
+            "snapshot"
+          ]
+        },
+        {
+          "id": "title",
+          "component": "Text",
+          "text": {
+            "@path": "/run/title"
           }
-        ]
-      }
-    },
-    {
-      "version": "v1.0",
-      "updateDataModel": {
-        "surfaceId": "run_run_27ef7d722d389f93",
-        "path": "/",
-        "value": {
-          "taskSummary": "Fix the two known persistence caveats in this repo (the reference implementation itself). (1) run.json is rewritten only on state-changing events, so its lastEvent can lag the trailing events after run.finished \u2014 make the persisted record accurate when a run finishes, so a reloaded finished run's lastE\u2026",
-          "stateText": "State: done",
-          "stageText": "Stage 7 of 7: hand-off or closure",
-          "workUnitsText": "Work units: 6/6 done, 0 failed",
-          "verdictText": "Verdict: pass \u2014 Green verdict by verifier; 22 of 22 criteria passed",
-          "watchText": "Watch: https://example.invalid/watch?run=run_27ef7d722d389f93",
-          "attentionText": "Attention needed: none",
-          "digestSeq": 78139,
-          "updatedAt": "2026-11-21T21:47:45.002Z"
+        },
+        {
+          "id": "task",
+          "component": "Text",
+          "text": {
+            "@path": "/run/task"
+          }
+        },
+        {
+          "id": "state",
+          "component": "Text",
+          "text": {
+            "@path": "/run/state"
+          }
+        },
+        {
+          "id": "stage",
+          "component": "Text",
+          "text": {
+            "@path": "/run/stage"
+          }
+        },
+        {
+          "id": "elapsed",
+          "component": "Text",
+          "text": {
+            "@path": "/run/elapsed"
+          }
+        },
+        {
+          "id": "packages_line",
+          "component": "Text",
+          "text": {
+            "@path": "/run/packages"
+          }
+        },
+        {
+          "id": "verdict",
+          "component": "Text",
+          "text": {
+            "@path": "/run/verdict"
+          }
+        },
+        {
+          "id": "team_heading",
+          "component": "Text",
+          "text": "Team"
+        },
+        {
+          "id": "team_list",
+          "component": "List",
+          "children": {
+            "path": "/agents",
+            "componentId": "agent_row"
+          }
+        },
+        {
+          "id": "agent_row",
+          "component": "Text",
+          "text": {
+            "@path": "label"
+          }
+        },
+        {
+          "id": "packages_heading",
+          "component": "Text",
+          "text": "Packages"
+        },
+        {
+          "id": "package_list",
+          "component": "List",
+          "children": {
+            "path": "/packages",
+            "componentId": "package_row"
+          }
+        },
+        {
+          "id": "package_row",
+          "component": "Text",
+          "text": {
+            "@path": "label"
+          }
+        },
+        {
+          "id": "watch",
+          "component": "Text",
+          "text": {
+            "@path": "/run/watch"
+          }
+        },
+        {
+          "id": "snapshot",
+          "component": "Text",
+          "text": {
+            "@path": "/run/snapshot"
+          }
         }
+      ],
+      "dataModel": {
+        "run": {
+          "title": "Run run_27ef7d722d389f93",
+          "task": "Fix the two known persistence caveats in this repo (the reference implementation itself). (1) run.json is rewritten only on state-changing events, so its lastEvent can lag the trailing events after run.finished — make the persisted record accurate when a run finishes, so a reloaded finished run's lastE…",
+          "state": "State: done",
+          "stage": "Stage 7 of 7 (hand-off or closure)",
+          "elapsed": "Elapsed: 38m 52s",
+          "packages": "Packages: 6 of 6 done",
+          "verdict": "Verdict: pass — Green verdict by verifier; 22 of 22 criteria passed",
+          "watch": "Watch: https://example.invalid/watch?run=run_27ef7d722d389f93",
+          "snapshot": "Snapshot at 2026-11-21T21:47:45.002Z · seq 78139"
+        },
+        "agents": [
+          {
+            "label": "supervisor · supervisor · done"
+          },
+          {
+            "label": "researcher · researcher · done"
+          },
+          {
+            "label": "builder · builder · done"
+          },
+          {
+            "label": "verifier · verifier · done"
+          },
+          {
+            "label": "runtime · runtime · done"
+          },
+          {
+            "label": "archivist · archivist · done"
+          }
+        ],
+        "packages": [
+          {
+            "label": "P1 · P1: Analyse the two persistence caveats and produce a fix design · verified · verdict pass"
+          },
+          {
+            "label": "P2 · P2: Implement the two persistence fixes in the server code · verified · verdict pass · feature/persistence-record-accuracy"
+          },
+          {
+            "label": "P3 · P3: Tests for both behaviours including a reload/restart case, and docs/PERSISTENCE.md update · verified · verdict pass · feature/persistence-record-accuracy"
+          },
+          {
+            "label": "P4 · P4: Verify the two persistence fixes against the package criteria · verified · verdict pass"
+          },
+          {
+            "label": "P5 · P5: Merge the feature branch to main with a merge commit, and record the merge accounting · verified · verdict pass"
+          },
+          {
+            "label": "P6 · P6: Archive the run and close it · verified · verdict pass"
+          }
+        ],
+        "attention": []
       }
     }
-  ]
-}
+  }
+]

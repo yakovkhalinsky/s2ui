@@ -1,6 +1,6 @@
 # S2UI — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.0 (23 Nov 2026).** The protocol
+**Status: public DRAFT, release 0.1.1 (23 Nov 2026).** The protocol
 line is **S2UI/1**; the repository releases are numbered 0.1.x until
 a second, independent implementation exists.
 
@@ -35,11 +35,12 @@ not the marketing.
    state, stage, agents, work units, verdict, tokens, a watch link,
    and a monotonic `seq`.
 2. **See its surface** (2 min) — open the paired
-   `examples/dogfood-persistence.surface.json`: the A2UI messages
-   a UI would render for that digest. It is labelled DRAFT — a
-   deterministic composition following the spec, made before the
-   real composer's output was extracted for this package. Real
-   composer output replaces these in v0.2.
+   `examples/dogfood-persistence.surface.json`: the A2UI 1.0
+   messages a UI renders for that digest — real output of the
+   reference composer's reference implementation, extracted from
+   its MCP tools (the watch URL is sanitised; the composer's
+   labels use the reference implementation's internal naming,
+   see spec §4.3).
 3. **Validate everything** (1 min):
    ```bash
    node tools/validate
@@ -69,9 +70,9 @@ s2ui/
     s2ui-command-v1-draft.schema.json    DRAFT
   examples/
     dogfood-persistence.rundigest.json   real run (reference supervisor on itself)
-    dogfood-persistence.surface.json     DRAFT composition, paired
+    dogfood-persistence.surface.json     real composer output, paired
     parallel-packages.rundigest.json     real run (parallel work units)
-    parallel-packages.surface.json       DRAFT composition, paired
+    parallel-packages.surface.json       real composer output, paired
     beth.catalog.json                    DRAFT catalogue example
     answer-attention.command.json        DRAFT command example
   tools/
@@ -97,7 +98,9 @@ a change is a new version beside the old one.
 
 Both digests were taken live from the reference supervisor's
 `list_run_digests` on 23 Nov 2026 and transformed to the public
-core names by the mapping in spec §4.3. For publication, local
+core names by the mapping in spec §4.3. The paired surfaces are
+the reference composer's real composer output for the same runs,
+taken from `supervisor_status` the same day. For publication, local
 filesystem paths and private watch URLs were sanitised (the
 `subject` fields are descriptive, and `links.watchUrl` uses
 `example.invalid`). Both kept runs happen to be finished with a

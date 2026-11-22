@@ -1,6 +1,6 @@
 # S2UI/1 — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.0 (23 Nov 2026).**
+**Status: public DRAFT, release 0.1.1 (23 Nov 2026).**
 This document is an original specification draft, published at
 https://yakov.khalinsky.com/s2ui/ with its source in the public
 `s2ui` repository. Implementation status is stated honestly in
@@ -58,7 +58,7 @@ S2UI/1 bundles four versioned parts:
 | 1 | RunDigest v1 | `schema/run-digest-v1.schema.json` | **Implemented.** Shipping in the reference implementation (`list_run_digests`, and `supervisor_status` → `structuredContent.digest`), validated against real runs. |
 | 2 | Beth catalog v1 | `schema/beth-catalog-v1-draft.schema.json` | **DRAFT.** Defined in prose in the reference implementation's decision record; no catalogue file ships yet. The reference composer uses Basic Catalog components only (Text, Card, Column, List). |
 | 3 | Command set | `schema/s2ui-command-v1-draft.schema.json` | **DRAFT.** Defined in prose; no S2UI command tool ships yet. |
-| 4 | Surface lifecycle rules | `schema/s2ui-surface-v1-draft.schema.json` + §7–§8 | **Implemented in the reference supervisor.** Its state-reporting MCP tools return deterministically composed surfaces beside the digest. The surface *examples* in this package are still draft compositions, labelled as such; real composer output replaces them in release 0.2.0. |
+| 4 | Surface lifecycle rules | `schema/s2ui-surface-v1-draft.schema.json` + §7–§8 | **Implemented in the reference supervisor.** Its state-reporting MCP tools return deterministically composed surfaces beside the digest. The surface *examples* in this package are real composer output (release 0.1.1; in 0.1.0 they were 0.9.1-style draft compositions — see the changelog). |
 
 Anything in this spec that describes parts 2–3 describes the
 **design contract**, not running behaviour. Conforming
@@ -205,27 +205,42 @@ For v1:
 - The v1 templates are: `run-card` (one run's glance card),
   `attention-card` (one unresolved attention item), and
   `portfolio` (the cross-run surface, §7).
+- Until a Beth catalog file ships with a stable `catalogId` of
+  its own, surfaces carry the **A2UI Basic Catalog URL** as
+  their `catalogId` — that is what the reference composer emits
+  today. Adopting a future Beth `catalogId` is a one-constant
+  change in a composer, not a protocol change.
 
 ---
 
 ## 6. Surfaces (DRAFT)
 
-An S2UI surface is a list of A2UI 1.0 messages for one surface:
-`createSurface`, then `updateComponents` and `updateDataModel`,
-with `deleteSurface` when the surface's lifecycle ends (§7).
+An S2UI surface payload is a list of A2UI 1.0 messages for one
+surface. The **snapshot form** — the form the reference composer
+emits today, and the form of this package's examples — is a
+single `createSurface` message (version `"1.0"`) carrying the
+components and the **full data model inline**. Component text
+binds to the data model with `{"@path": ...}` references. Live
+surfaces MAY follow with `updateComponents` and
+`updateDataModel` messages, and `deleteSurface` when the
+surface's lifecycle ends (§7).
 
 - A run surface is composed from exactly one RunDigest. A
   portfolio surface is composed from a list of RunDigests.
 - Composition MUST be deterministic: the same digest(s) in, the
-  same surface out. Data that changes (state text, counts,
-  verdict, attention) SHOULD travel in the data model
-  (`updateDataModel`), with component structure changing only
-  when the template itself changes.
-- A run's glance content is, in order: task summary, state,
-  stage (n of m, name), work units (done/total, failed), verdict
-  if present, and the drill-in link. An attention card exists
-  for each unresolved attention item in the digest, and for
-  nothing else.
+  same surface out. In the snapshot form the whole data model
+  travels with `createSurface`; in a live surface, changing data
+  SHOULD travel in `updateDataModel`, with component structure
+  changing only when the template itself changes.
+- A run's glance content is, in order: a title, the task
+  summary, state, stage (n of m, name), elapsed time as text,
+  the work-unit line (done/total), verdict if present, the team
+  rows, the work-unit rows, the drill-in link, and a snapshot
+  line carrying the digest's `updatedAt` and `seq`. (The
+  reference composer's labels use its internal naming —
+  "Packages" for work units; see §4.3.) An attention card
+  exists for each unresolved attention item in the digest, and
+  for nothing else.
 
 ---
 
@@ -375,4 +390,6 @@ decision record in the reference implementation's `docs/BETH.md`
 (Phase 0), the RunDigest v1 implementation
 (Phase 1) and the reference surface composer
 . First published 23 Nov 2026 as release
-0.1.0. No text is adapted from A2UI's documents.
+0.1.0; release 0.1.1 the same day replaced the draft surface
+examples with real composer output in the A2UI 1.0 envelope
+form. No text is adapted from A2UI's documents.
