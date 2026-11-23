@@ -1,6 +1,6 @@
 # S2UI/1 — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.3 (23 Nov 2026).**
+**Status: public DRAFT, release 0.2.0 (23 Nov 2026).**
 This document is an original specification draft, published at
 https://yakov.khalinsky.com/s2ui/ with its source in the public
 `s2ui` repository. Implementation status is stated honestly in

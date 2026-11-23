@@ -6,7 +6,7 @@ implementation; the line will not be called 1.0 until a second,
 independent implementation exists. Published schema files do not
 change in place — a change is a new version beside the old one.
 
-## Unreleased
+## 0.2.0 — 2026-11-23
 
 - **A real waiting-run example.** `examples/waiting-approval.rundigest.json`
   is a RunDigest captured from a live run while it was waiting on

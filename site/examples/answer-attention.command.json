@@ -1,1 +1,11 @@
-{"_draft":true,"_note":"DRAFT example. No S2UI command tool ships yet. This shows the envelope shape only; the paired digests have no unresolved attention, so this example is illustrative and is not a live request against a real run.","answer":"approved","attentionId":"example-attention-id","command":"answer_attention","expectedSeq":78139,"idempotencyKey":"example-0001-answer_attention","requestedBy":"example-operator","runId":"run_27ef7d722d389f93"}
+{
+  "_draft": true,
+  "_note": "DRAFT envelope, real target. The command set now ships in the reference Beth layer as app-only MCP tools over an audited command layer; the envelope schema remains draft. This example is the answer_attention command for the approval item in examples/waiting-approval.rundigest.json \u2014 a real captured run that was waiting on the human when its digest was taken (seq 1005). The answer shown is the one the operator in fact gave.",
+  "answer": "approved",
+  "attentionId": "authorisation-1",
+  "command": "answer_attention",
+  "expectedSeq": 1005,
+  "idempotencyKey": "example-0001-answer_attention",
+  "requestedBy": "example-operator",
+  "runId": "run_326b74de06e11cd8"
+}

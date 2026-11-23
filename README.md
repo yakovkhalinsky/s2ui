@@ -1,6 +1,6 @@
 # S2UI — Supervisor-to-UI
 
-**Status: public DRAFT, release 0.1.3 (23 Nov 2026).** The protocol
+**Status: public DRAFT, release 0.2.0 (23 Nov 2026).** The protocol
 line is **S2UI/1**; the repository releases are numbered 0.1.x until
 a second, independent implementation exists.
 
