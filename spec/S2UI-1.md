@@ -5,9 +5,10 @@ This document is an original specification draft, published at
 https://yakov.khalinsky.com/s2ui/ with its source in the public
 `s2ui` repository. Implementation status is stated honestly in
 §2: parts of S2UI/1 are running code (RunDigest v1 and the
-surface composer, in the reference supervisor) and parts are
-still design only (the catalogue file, the command tools, and
-the Beth layer itself).
+surface composer, in the reference supervisor; the command
+tools and the Beth layer above it, in the reference Beth
+service) and one part is still design only (the catalogue
+file).
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY are to be
 read as in RFC 2119.
@@ -57,10 +58,10 @@ S2UI/1 bundles four versioned parts:
 |---|------|--------|----------------------|
 | 1 | RunDigest v1 | `schema/run-digest-v1.schema.json` | **Implemented.** Shipping in the reference implementation (its `list_run_digests` tool, and `supervisor_status` → `structuredContent.digest`), validated against real runs. |
 | 2 | Beth catalog v1 | `schema/beth-catalog-v1-draft.schema.json` | **DRAFT.** Defined in prose in the reference implementation's decision record; no catalogue file ships yet. The reference composer uses Basic Catalog components only (Text, Card, Column, List). |
-| 3 | Command set | `schema/s2ui-command-v1-draft.schema.json` | **DRAFT.** Defined in prose; no S2UI command tool ships yet. |
+| 3 | Command set | `schema/s2ui-command-v1-draft.schema.json` | **Implemented; envelope DRAFT.** The commands ship in the reference Beth layer as app-only MCP tools (plus model-visible `start_run`) over an audited command layer: per-run authorisation, a fresh-state check before acting, idempotency keys, an append-only audit log. The envelope schema remains draft. |
 | 4 | Surface lifecycle rules | `schema/s2ui-surface-v1-draft.schema.json` + §7–§8 | **Implemented in the reference supervisor.** Its state-reporting MCP tools return deterministically composed surfaces beside the digest. The surface *examples* in this package are real composer output (release 0.1.1; in 0.1.0 they were 0.9.1-style draft compositions — see the changelog). |
 
-Anything in this spec that describes parts 2–3 describes the
+Anything in this spec that describes part 2 describes the
 **design contract**, not running behaviour. Conforming
 implementations MUST NOT claim those parts are live in the
 reference implementation until they are. Part 4's composer is

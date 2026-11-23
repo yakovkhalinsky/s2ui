@@ -6,6 +6,26 @@ implementation; the line will not be called 1.0 until a second,
 independent implementation exists. Published schema files do not
 change in place — a change is a new version beside the old one.
 
+## Unreleased
+
+- **A real waiting-run example.** `examples/waiting-approval.rundigest.json`
+  is a RunDigest captured from a live run while it was waiting on
+  the human: an unresolved approval attention item, its prepared
+  action, and the gated work unit — the fixture the 0.1.x examples
+  lacked (every earlier digest had empty attention). Paired with
+  its composed surface. The digest is anonymised the same way as
+  the other real-run examples (subject and watch URL sanitised;
+  the attention id shortened to an opaque form).
+- **The command set is implemented.** §2's status table and the
+  `answer-attention.command.json` example said no S2UI command
+  tool ships yet; that stopped being true when the reference
+  Beth layer shipped its command tools (Phase 4 of the Beth
+  plan): start, answer, approve, stop and resume over an audited
+  command layer with per-run authorisation, fresh-state checks
+  and idempotency keys. The command example now targets the
+  waiting-approval digest for real. The envelope schema remains
+  DRAFT.
+
 ## 0.1.3 — 2026-11-23
 
 References to the private reference implementation removed.

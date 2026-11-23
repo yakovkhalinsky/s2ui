@@ -1,0 +1,68 @@
+{
+  "digestVersion": "1",
+  "runId": "run_326b74de06e11cd8",
+  "subject": "The reference supervisor's own repository",
+  "taskSummary": "Two parts. Part 1: have an Explorer report the current date and time on this machine. Part 2 is deliberately gated on the human: before anyone starts Part 2, the run must stop and ask the human for authorisation — the question below, with the prepared action of writing the file part2-done.txt in the working directory. The human answers through another channel and the run is then resumed with the answer in its record.",
+  "supervisorId": "supervisor",
+  "state": "waiting_human",
+  "stage": {
+    "index": 2,
+    "count": 4,
+    "name": "act",
+    "role": "builder"
+  },
+  "startedAt": "2026-11-23T07:24:09.783Z",
+  "elapsedSec": 148.006,
+  "updatedAt": "2026-11-23T07:26:17.849Z",
+  "agents": [
+    {
+      "name": "supervisor",
+      "role": "supervisor",
+      "state": "working"
+    },
+    {
+      "name": "explorer",
+      "role": "researcher",
+      "state": "working",
+      "currentWorkUnitId": "P1"
+    }
+  ],
+  "workUnits": {
+    "total": 2,
+    "done": 0,
+    "failed": 0,
+    "items": [
+      {
+        "id": "P1",
+        "title": "Explorer reports current date and time on this machine",
+        "state": "built"
+      },
+      {
+        "id": "P2",
+        "title": "Write part2-done.txt in the working directory (GATED on human authorisation)",
+        "state": "planned"
+      }
+    ]
+  },
+  "attention": [
+    {
+      "id": "authorisation-1",
+      "kind": "approval",
+      "prompt": "May the run proceed to Part 2: writing the file part2-done.txt in the working directory?",
+      "choices": [
+        "approved",
+        "denied"
+      ],
+      "preparedAction": "Write part2-done.txt in the working directory",
+      "raisedAt": "2026-11-23T07:26:11.822Z"
+    }
+  ],
+  "links": {
+    "watchUrl": "https://example.invalid/watch?run=run_326b74de06e11cd8"
+  },
+  "seq": 1005,
+  "tokens": {
+    "input": 28720,
+    "output": 9259
+  }
+}

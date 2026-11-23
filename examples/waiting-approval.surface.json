@@ -1,0 +1,207 @@
+[
+  {
+    "version": "1.0",
+    "createSurface": {
+      "surfaceId": "run_run_326b74de06e11cd8",
+      "catalogId": "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "body"
+        },
+        {
+          "id": "body",
+          "component": "Column",
+          "children": [
+            "title",
+            "task",
+            "state",
+            "stage",
+            "elapsed",
+            "work_units_line",
+            "team_heading",
+            "team_list",
+            "work_units_heading",
+            "work_unit_list",
+            "attention_heading",
+            "attention_list",
+            "watch",
+            "snapshot"
+          ]
+        },
+        {
+          "id": "title",
+          "component": "Text",
+          "text": {
+            "@path": "/run/title"
+          }
+        },
+        {
+          "id": "task",
+          "component": "Text",
+          "text": {
+            "@path": "/run/task"
+          }
+        },
+        {
+          "id": "state",
+          "component": "Text",
+          "text": {
+            "@path": "/run/state"
+          }
+        },
+        {
+          "id": "stage",
+          "component": "Text",
+          "text": {
+            "@path": "/run/stage"
+          }
+        },
+        {
+          "id": "elapsed",
+          "component": "Text",
+          "text": {
+            "@path": "/run/elapsed"
+          }
+        },
+        {
+          "id": "work_units_line",
+          "component": "Text",
+          "text": {
+            "@path": "/run/workUnits"
+          }
+        },
+        {
+          "id": "team_heading",
+          "component": "Text",
+          "text": "Team"
+        },
+        {
+          "id": "team_list",
+          "component": "List",
+          "children": {
+            "path": "/agents",
+            "componentId": "agent_row"
+          }
+        },
+        {
+          "id": "agent_row",
+          "component": "Text",
+          "text": {
+            "@path": "label"
+          }
+        },
+        {
+          "id": "work_units_heading",
+          "component": "Text",
+          "text": "Work units"
+        },
+        {
+          "id": "work_unit_list",
+          "component": "List",
+          "children": {
+            "path": "/workUnits",
+            "componentId": "work_unit_row"
+          }
+        },
+        {
+          "id": "work_unit_row",
+          "component": "Text",
+          "text": {
+            "@path": "label"
+          }
+        },
+        {
+          "id": "attention_heading",
+          "component": "Text",
+          "text": "Needs a human"
+        },
+        {
+          "id": "attention_list",
+          "component": "List",
+          "children": {
+            "path": "/attention",
+            "componentId": "attention_card"
+          }
+        },
+        {
+          "id": "attention_card",
+          "component": "Card",
+          "child": "attention_body"
+        },
+        {
+          "id": "attention_body",
+          "component": "Column",
+          "children": [
+            "attention_prompt",
+            "attention_meta"
+          ]
+        },
+        {
+          "id": "attention_prompt",
+          "component": "Text",
+          "text": {
+            "@path": "prompt"
+          }
+        },
+        {
+          "id": "attention_meta",
+          "component": "Text",
+          "text": {
+            "@path": "meta"
+          }
+        },
+        {
+          "id": "watch",
+          "component": "Text",
+          "text": {
+            "@path": "/run/watch"
+          }
+        },
+        {
+          "id": "snapshot",
+          "component": "Text",
+          "text": {
+            "@path": "/run/snapshot"
+          }
+        }
+      ],
+      "dataModel": {
+        "run": {
+          "title": "Run run_326b74de06e11cd8",
+          "task": "Two parts. Part 1: have an Explorer report the current date and time on this machine. Part 2 is deliberately gated on the human: before anyone starts Part 2, the run must stop and ask the human for authorisation \u2014 the question below, with the prepared action of writing the file part2-done.txt in the working directory. The human answers through another channel and the run is then resumed with the answer in its record.",
+          "state": "State: waiting_human",
+          "stage": "Stage 3 of 4 (act)",
+          "elapsed": "Elapsed: 2m 28s",
+          "workUnits": "Work units: 0 of 2 done",
+          "verdict": "",
+          "watch": "Watch: https://example.invalid/watch?run=run_326b74de06e11cd8",
+          "snapshot": "Snapshot at 2026-11-23T07:26:17.849Z \u00b7 seq 1005"
+        },
+        "agents": [
+          {
+            "label": "supervisor \u00b7 supervisor \u00b7 working"
+          },
+          {
+            "label": "explorer \u00b7 researcher \u00b7 working \u00b7 P1"
+          }
+        ],
+        "workUnits": [
+          {
+            "label": "P1 \u00b7 Explorer reports current date and time on this machine \u00b7 built"
+          },
+          {
+            "label": "P2 \u00b7 Write part2-done.txt in the working directory (GATED on human authorisation) \u00b7 planned"
+          }
+        ],
+        "attention": [
+          {
+            "prompt": "May the run proceed to Part 2: writing the file part2-done.txt in the working directory?",
+            "meta": "approval \u00b7 choices: approved \u00b7 denied \u00b7 prepared: Write part2-done.txt in the working directory \u00b7 raised 2026-11-23T07:26:11.822Z"
+          }
+        ]
+      }
+    }
+  }
+]

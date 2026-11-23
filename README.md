@@ -42,7 +42,13 @@ not the marketing.
    its MCP tools (the watch URL is sanitised; the composer's
    text labels say "Packages" for work units — a display label,
    not a field name).
-3. **Validate everything** (1 min):
+3. **See a run waiting on its human** (1 min) — open
+   `examples/waiting-approval.rundigest.json`: a real run
+   captured mid-flight with an unresolved approval in its
+   attention, the prepared action it is gated on, and the work
+   unit it blocks. `examples/answer-attention.command.json`
+   is the command that answers it.
+4. **Validate everything** (1 min):
    ```bash
    node tools/validate
    ```
@@ -74,6 +80,8 @@ s2ui/
     dogfood-persistence.surface.json     real composer output, paired
     parallel-packages.rundigest.json     real run (parallel work units)
     parallel-packages.surface.json       real composer output, paired
+    waiting-approval.rundigest.json      real run, captured while waiting on the human
+    waiting-approval.surface.json        real composer output, paired
     beth.catalog.json                    DRAFT catalogue example
     answer-attention.command.json        DRAFT command example
   tools/
